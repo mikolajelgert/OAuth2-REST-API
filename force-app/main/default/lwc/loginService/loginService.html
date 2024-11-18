@@ -1,0 +1,22 @@
+<template>
+    <div class="login-container">
+        <img src={images.cloud} alt="salesforce-cloudLogo" width="150" height="150" class="cloud-header"/>
+        <div class="header">
+            <p>OAuth REST_API</p>
+        </div>
+        <div class="body-container">
+            <div class="form-login">
+                <lightning-input type="text" name="username" id="username" label="Username"></lightning-input>
+            </div>
+            <div class="form-password">
+                <lightning-input type="text" name="password" id="password" label="Password"></lightning-input>
+            </div>
+            <div class="form-submit">
+                <lightning-button class="login-button" variant="brand" type="submit" onclick={handleSubmit} label="Login"></lightning-button>
+            </div>
+            <div class="form-register">
+                <a onclick={navigateToRegister}>Don't have an account? Register</a>
+            </div>
+        </div>
+    </div>
+</template>
