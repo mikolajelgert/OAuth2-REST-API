@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuthProvider xmlns="http://soap.sforce.com/2006/04/metadata">
+    <authorizeUrl>https://cloobees91-dev-ed.develop.lightning.force.com/services/oauth2/authorize</authorizeUrl>
+    <consumerKey>3MVG9SOw8KERNN0.JJ2hXbnuIja9fdbkRYnzIh0Nvh6lDoyy0akouLdTtzwgls4gDohMvSWVaNKlHpwVEyQju</consumerKey>
+    <consumerSecret>Placeholder_Value</consumerSecret>
+    <defaultScopes>full refresh_token offline_access</defaultScopes>
+    <friendlyName>Salesforce_Server</friendlyName>
+    <includeOrgIdInIdentifier>true</includeOrgIdInIdentifier>
+    <isPkceEnabled>true</isPkceEnabled>
+    <providerType>Salesforce</providerType>
+    <requireMfa>false</requireMfa>
+    <sendAccessTokenInHeader>false</sendAccessTokenInHeader>
+    <sendClientCredentialsInHeader>false</sendClientCredentialsInHeader>
+    <sendSecretInApis>true</sendSecretInApis>
+    <tokenUrl>https://cloobees91-dev-ed.develop.lightning.force.com/services/oauth2/token</tokenUrl>
+</AuthProvider>
