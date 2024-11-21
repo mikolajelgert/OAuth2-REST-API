@@ -1,3 +1,31 @@
 <template>
-    registration
+    <div class="login-container">
+        <img src={images.cloud} alt="salesforce-cloudLogo" width="150" height="150" class="cloud-header"/>
+        <div class="header">
+            <p>OAuth REST_API</p>
+        </div>
+        <div class="body-container">
+            <p class="body-header">User creation</p>
+            <div class="body-inputs">
+                <div class="form-login">
+                    <lightning-input type="text" name="username" id="username" label="Name"></lightning-input>
+                </div>
+                <div class="form-surname">
+                    <lightning-input type="text" name="surname" id="surname" label="LastName"></lightning-input>
+                </div>
+                <div class="form-email">
+                    <lightning-input type="text" name="email" id="email" label="Email"></lightning-input>
+                </div>
+                <div class="form-alias">
+                    <lightning-input type="text" name="alias" id="alias" label="Alias"></lightning-input>
+                </div>
+            </div>
+            <div class="form-submit">
+                <lightning-button class="login-button" variant="brand" type="submit" onclick={handleSubmit} label="Create Account"></lightning-button>
+            </div>
+            <div class="form-register">
+                <a onclick={navigateToLogin}>Back to login</a>
+            </div>
+        </div>
+    </div>
 </template>
