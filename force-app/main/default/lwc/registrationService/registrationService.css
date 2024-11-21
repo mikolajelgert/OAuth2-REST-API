@@ -1,0 +1,68 @@
+.cloud-header {
+    margin-bottom: 20px;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.header {
+    width: 300px;
+    height: auto;
+    text-align: center;
+    background-color: rgb(154, 195, 241);
+    border: 2px solid rgb(1, 79, 168);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.header p {
+    font-size: 25px;
+    font-weight: 500;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.body-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    text-align: left;
+    height: auto;
+    margin: 15px;
+    background-color: rgb(212, 212, 212);
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.body-header {
+    font-size: 24px;
+    font-weight: 400;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.body-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 5px;
+    column-gap: 20px;
+    padding: 20px;
+}
+
+.body-inputs lightning-input {
+    min-width: 150px;
+}
+
+.form-submit {
+    margin-top: -10px;
+}
+
+.form-register {
+    margin-top: 10px;
+    align-self: flex-start;
+    margin-left: 20px;
+}
