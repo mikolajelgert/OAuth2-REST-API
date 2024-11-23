@@ -1,0 +1,67 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "OAuthLogin",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"4e02c600-0f15-480f-afef-932a25981d33\",\"columns\":[{\"UUID\":\"b1cf7c89-5147-456a-ad0f-792c47358948\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : { },
+              "definition" : "c:loginService",
+              "id" : "a5128766-8135-4cdc-8a1f-012a515f2839",
+              "type" : "component"
+            } ],
+            "id" : "b1cf7c89-5147-456a-ad0f-792c47358948",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "4e02c600-0f15-480f-afef-932a25981d33",
+          "type" : "component"
+        } ],
+        "id" : "e46583bf-5374-429b-b489-600a637af82b",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "pageTitle" : "OAuthLogin",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "98485887-b38e-4864-b280-d51724347654",
+          "type" : "component"
+        } ],
+        "id" : "d1e3bf91-0522-443b-9ec1-d2c1a14915f2",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "b0358eff-62c9-4fff-9ca2-b1070354231b",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-oauthlogin"
+  },
+  "urlName" : "oauthlogin"
+}
