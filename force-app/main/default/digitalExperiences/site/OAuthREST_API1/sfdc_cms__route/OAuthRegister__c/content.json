@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "OAuthRegister",
+  "contentBody" : {
+    "activeViewId" : "OAuthRegister",
+    "configurationTags" : [ ],
+    "pageAccess" : "Public",
+    "routeType" : "custom-oauthregister",
+    "urlPrefix" : "oauthregister"
+  },
+  "urlName" : "oauthregister"
+}

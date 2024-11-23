@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "OAuthLogin",
+  "contentBody" : {
+    "activeViewId" : "OAuthLogin",
+    "configurationTags" : [ ],
+    "pageAccess" : "Public",
+    "routeType" : "custom-oauthlogin",
+    "urlPrefix" : "oauthlogin"
+  },
+  "urlName" : "oauthlogin"
+}
