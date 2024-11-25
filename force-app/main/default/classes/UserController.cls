@@ -1,53 +1,65 @@
-public with sharing class UserController {
-    private static final String COMMUNITY_USER_NAME = 'Customer Community User';
+public without sharing class UserController {
+    private static final String CHATTER_USER_NAME = 'Chatter External User';
+    private static final String USER_FIRSTNAME = 'firstname';
+    private static final String USER_LASTNAME = 'lastname';
+    private static final String USER_EMAIL = 'email';
+    private static final String USER_ALIAS = 'alias';
+    private static final String USER_PASSWORD = 'password';
 
     private static String getProfileId(String name) {
         return [SELECT Id FROM Profile WHERE Name = :name LIMIT 1].Id;
     }
 
-    public static void createRelationshipObjects() {
-        Account account = new Account(Name = 'Test Account');
-        insert account;
+    @AuraEnabled(cacheable=false)
+    public static void createUserData(Map<String, Object> userData) {
+        String firstName = (String) userData.get(USER_FIRSTNAME);
+        String lastName = (String) userData.get(USER_LASTNAME);
+        String email = (String) userData.get(USER_EMAIL);
+        String alias = (String) userData.get(USER_ALIAS);
 
-        Contact contact = new Contact(
-        FirstName = 'Test',
-        LastName = 'LastName',
-        AccountId = account.Id
-        );
-        insert contact;
+        List<User> users = [SELECT Id FROM User WHERE Email = :email OR LastName = :lastName];
+        if (users != null || users.size() > 0) return;
+        createUserREST(new List<String>{firstName, lastName, email, alias});
     }
-    
-    //@AuraEnabled(cacheable=false)
-    @future(callout=true)
-    public static void createUser() {
-        RESTService.refreshAccessToken();
-        createRelationshipObjects();
 
-        Map<String, Object> userData = new Map<String, Object>{
-            'Username' => 'tralala@lala.com',
-            'LastName' => 'testLastName',
-            'Alias' => 'demoapi',
-            'Email' => 'test@example.com',
+    @future(callout=true)
+    public static void createUserREST(List<String> data) {
+        Map<String, Object> userMap = new Map<String, Object>{
+            'Username' => data[0] + '.' + data[1] + '@restapi.com',
+            'LastName' => data[1],
+            'Email' => data[2],
+            'Alias' => data[3],
             'LanguageLocaleKey' => 'en_US',
-            'ProfileId' => getProfileId(COMMUNITY_USER_NAME),
-            'ContactId' => [SELECT Id FROM Contact WHERE FirstName = 'Test' LIMIT 1].Id
+            'TimeZoneSidKey' => 'GMT',
+            'EmailEncodingKey' => 'UTF-8',
+            'LocaleSidKey' => 'en_US',
+            'ProfileId' => getProfileId(CHATTER_USER_NAME)
         };
+        System.debug(JSON.serialize(userMap));
         String endpoint = 'callout:' + RESTService.NAMED_CREDENTIAL + RESTService.CREATE_USER_ENDPOINT;
 
         HttpRequest request = RESTService.createRequest(
             'POST', 
             endpoint,
-            JSON.serialize(userData),
+            JSON.serialize(userMap),
             'application/json'
         );
 
-        HttpResponse resp;
-        try {
-            Http http = new Http();
-            resp = http.send(request);
-            System.debug(resp.getBody());
-        }catch(Exception ex) {
-            System.debug(ex.getMessage());
+        RESTService.refreshAccessToken();
+        HttpResponse response = RESTService.sendRequest(request);
+    }
+
+    @AuraEnabled
+    public static Boolean setUserPassword(String email, String password) {
+        User user = [SELECT Id FROM User WHERE Email = :email LIMIT 1];
+        if (user != null) {
+            try {
+                System.setPassword(user.Id, password);
+                return true;
+            }catch(Exception ex) {
+                System.debug(ex.getMessage());
+            }
         }
+        return false;
     }
 }

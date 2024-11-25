@@ -6,23 +6,32 @@
         </div>
         <div class="body-container">
             <p class="body-header">User creation</p>
-            <div class="body-inputs">
-                <div class="form-login">
-                    <lightning-input type="text" name="username" id="username" label="Name"></lightning-input>
+            <template lwc:if={isPasswordSet}>
+                <p>Password resetted successfully!!!</p>
+                <p>You can now return to login page.</p>
+            </template>
+            <template lwc:else>
+                <div class="body-inputs">
+                    <div class="form-firstname">
+                        <lightning-input type="text" name="firstname" id="username" label="FirstName"></lightning-input>
+                    </div>
+                    <div class="form-lastname">
+                        <lightning-input type="text" name="lastname" id="surname" label="LastName"></lightning-input>
+                    </div>
+                    <div class="form-email">
+                        <lightning-input type="text" name="email" id="email" label="Email"></lightning-input>
+                    </div>
+                    <div class="form-alias">
+                        <lightning-input type="text" name="alias" id="alias" label="Alias"></lightning-input>
+                    </div>
+                    <div class="form-password">
+                        <lightning-input type="text" name="password" id="password" label="Password"></lightning-input>
+                    </div>
                 </div>
-                <div class="form-surname">
-                    <lightning-input type="text" name="surname" id="surname" label="LastName"></lightning-input>
+                <div class="form-submit">
+                    <lightning-button class="login-button" variant="brand" type="submit" onclick={handleSubmit} label="Create Account"></lightning-button>
                 </div>
-                <div class="form-email">
-                    <lightning-input type="text" name="email" id="email" label="Email"></lightning-input>
-                </div>
-                <div class="form-alias">
-                    <lightning-input type="text" name="alias" id="alias" label="Alias"></lightning-input>
-                </div>
-            </div>
-            <div class="form-submit">
-                <lightning-button class="login-button" variant="brand" type="submit" onclick={handleSubmit} label="Create Account"></lightning-button>
-            </div>
+            </template>
             <div class="form-register">
                 <a onclick={navigateToLogin}>Back to login</a>
             </div>
