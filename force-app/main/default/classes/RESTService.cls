@@ -9,7 +9,6 @@ public with sharing class RESTService {
         req.setEndpoint(endpoint);
         req.setMethod(method);
         req.setHeader('Content-Type', contentType);
-        req.setHeader('Authorization', '{!$Credential.AuthorizationHeaderValue}');
         if (body != null) {
             req.setBody(body);
         }
@@ -32,10 +31,17 @@ public with sharing class RESTService {
         '&password=restAPI1029@';
 
         HttpRequest req = createRequest('POST', endpoint, body, contentType);
+        sendRequest(req);
+    }
+
+    public static HttpResponse sendRequest(HttpRequest request) {
+        Http http = new Http();
+        HttpResponse resp;
         try {
-            HttpResponse resp = http.send(req);
+            resp = http.send(request);
         }catch(Exception ex) {
-            System.debug(ex);
+            System.debug(ex.getMessage());
         }
+        return resp;
     }
 }

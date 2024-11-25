@@ -39,6 +39,9 @@ $RECYCLE.BIN/
 # Local environment variables
 .env
 
+#package.xml
+package.xml
+
 # Python Salesforce Functions
 **/__pycache__/
 **/.venv/

@@ -1,8 +1,11 @@
 import { LightningElement } from 'lwc';
 import { NavigationMixin } from "lightning/navigation";
 import sfCloud from '@salesforce/resourceUrl/sfCloud';
+import createUserData from '@salesforce/apex/UserController.createUserData';
+import setUserPassword from '@salesforce/apex/UserController.setUserPassword';
 
 export default class RegistrationService extends NavigationMixin(LightningElement) {
+    isPasswordSet = false;
     images = {
         cloud: sfCloud
     };
@@ -26,5 +29,22 @@ export default class RegistrationService extends NavigationMixin(LightningElemen
         });
         
         console.log(JSON.stringify(formatData));
+        createUserData({userData: formatData}).then(() => {
+            console.log('Created user');
+
+            setTimeout(() => {
+                setUserPassword({email: formatData?.email, password: formatData?.password}).then((result) => {
+                    if (result) {
+                        console.log('password set successfully')
+                        this.isPasswordSet = true;
+                    }
+                }).catch(error => {
+                    console.log(error);
+                })
+            }, 5000);
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 }
