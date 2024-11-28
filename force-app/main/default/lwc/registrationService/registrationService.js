@@ -28,20 +28,19 @@ export default class RegistrationService extends NavigationMixin(LightningElemen
             formatData[input.name] = input.value;
         });
         
-        console.log(JSON.stringify(formatData));
-        createUserData({userData: formatData}).then(() => {
-            console.log('Created user');
-
-            setTimeout(() => {
-                setUserPassword({email: formatData?.email, password: formatData?.password}).then((result) => {
-                    if (result) {
-                        console.log('password set successfully')
-                        this.isPasswordSet = true;
-                    }
-                }).catch(error => {
-                    console.log(error);
-                })
-            }, 5000);
+        createUserData({userData: formatData}).then((isCreated) => {
+            if (isCreated) {
+                setTimeout(() => {
+                    setUserPassword({email: formatData?.email, password: formatData?.password}).then((result) => {
+                        if (result) {
+                            console.log('password set successfully')
+                            this.isPasswordSet = true;
+                        }
+                    }).catch(error => {
+                        console.log(error);
+                    })
+                }, 3000);
+            }
         })
         .catch(error => {
             console.log(error);

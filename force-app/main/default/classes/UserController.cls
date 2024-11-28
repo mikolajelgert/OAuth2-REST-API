@@ -11,15 +11,19 @@ public without sharing class UserController {
     }
 
     @AuraEnabled(cacheable=false)
-    public static void createUserData(Map<String, Object> userData) {
+    public static Boolean createUserData(Map<String, Object> userData) {
         String firstName = (String) userData.get(USER_FIRSTNAME);
         String lastName = (String) userData.get(USER_LASTNAME);
         String email = (String) userData.get(USER_EMAIL);
         String alias = (String) userData.get(USER_ALIAS);
 
-        List<User> users = [SELECT Id FROM User WHERE Email = :email OR LastName = :lastName];
-        if (users != null || users.size() > 0) return;
+        //for testing purposes
+        // List<User> users = [SELECT Id FROM User WHERE Email = :email OR LastName = :lastName];
+        // if (users.size() > 0) {
+        //     return false;
+        // }
         createUserREST(new List<String>{firstName, lastName, email, alias});
+        return true;
     }
 
     @future(callout=true)
@@ -35,7 +39,6 @@ public without sharing class UserController {
             'LocaleSidKey' => 'en_US',
             'ProfileId' => getProfileId(CHATTER_USER_NAME)
         };
-        System.debug(JSON.serialize(userMap));
         String endpoint = 'callout:' + RESTService.NAMED_CREDENTIAL + RESTService.CREATE_USER_ENDPOINT;
 
         HttpRequest request = RESTService.createRequest(
@@ -61,5 +64,45 @@ public without sharing class UserController {
             }
         }
         return false;
+    }
+
+    @AuraEnabled(cacheable=false)
+    public static String checkUsername(String username) {
+        String query = 'SELECT Id FROM User WHERE Username = \'' + username + '\'';
+        String encodedQuery = EncodingUtil.urlEncode(query, 'UTF-8');
+        String endpoint = 'callout:' + RESTService.NAMED_CREDENTIAL + RESTService.GET_USER_ENDPOINT_SOQL + encodedQuery;
+
+        HttpRequest request = RESTService.createRequest(
+            'GET', 
+            endpoint,
+            null,
+            'application/json'
+        );
+
+        RESTService.refreshAccessToken();
+        HttpResponse response = RESTService.sendRequest(request);
+        if (response.getStatusCode() == 200) {
+            return response.getBody();
+        }
+        return '';
+    }
+
+    @AuraEnabled
+    public static String checkPassword(String username, String password) {
+        Http http = new Http();
+        Salesforce_Server__c server = [SELECT Client_Id__c, Client_Secret__c FROM Salesforce_Server__c WHERE Name = 'Salesforce_Server_CAPP' LIMIT 1];
+        String endpoint = 'callout:' + RESTService.NAMED_CREDENTIAL + RESTService.TOKEN_ENDPOINT_CREDENTIAL;
+        String contentType = 'application/x-www-form-urlencoded';
+        String body = 
+        'grant_type=password' +
+        '&client_id=' + server.Client_Id__c +
+        '&client_secret=' + server.Client_Secret__c +
+        '&username=' + username +
+        '&password=' + password;
+
+        RESTService.refreshAccessToken();
+        HttpRequest req = RESTService.createRequest('POST', endpoint, body, contentType);
+        HttpResponse resp = RESTService.sendRequest(req);
+        return resp.getBody();
     }
 }

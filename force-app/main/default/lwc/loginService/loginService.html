@@ -6,13 +6,19 @@
         </div>
         <div class="body-container">
             <div class="form-login">
-                <lightning-input type="text" name="username" id="username" label="Username"></lightning-input>
+                <lightning-input class={usernameInputClass} type="text" name="username" id="username" label="Username" onchange={handleUsername} onfocus={resetFlag}></lightning-input>
+                <template lwc:if={isUserNotExists}>
+                    <p class="text-error">User does not exist. <span class="text-register">Register below.</span></p>
+                </template>
             </div>
             <div class="form-password">
-                <lightning-input type="text" name="password" id="password" label="Password"></lightning-input>
+                <lightning-input class={passwordInputClass} type="text" name="password" id="password" label="Password" onchange={handlePassword} onfocus={resetFlag}></lightning-input>
+                <template lwc:if={isPasswordIncorrect}>
+                    <p class="text-error">Password incorrect</p>
+                </template>
             </div>
             <div class="form-submit">
-                <lightning-button class="login-button" variant="brand" type="submit" onclick={handleSubmit} label="Login"></lightning-button>
+                <lightning-button class="login-button" variant="brand" type="submit" onclick={checkCredentials} label="Login" disabled={areCredentialsCorrect}></lightning-button>
             </div>
             <div class="form-register">
                 <a onclick={navigateToRegister}>Don't have an account? Register</a>

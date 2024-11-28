@@ -1,8 +1,9 @@
 public with sharing class RESTService {
     public static final String NAMED_CREDENTIAL = 'Salesforce_Server';
     private static final String CONTEXT_USERNAME = 'developer@cloobees.com';
-    private static final String TOKEN_ENDPOINT = '/services/oauth2/token';
+    public static final String TOKEN_ENDPOINT_CREDENTIAL = '/services/oauth2/token';
     public static final String CREATE_USER_ENDPOINT = '/services/data/v58.0/sobjects/User';
+    public static final String GET_USER_ENDPOINT_SOQL = '/services/data/v58.0/query/?q=';
     
     public static HttpRequest createRequest(String method, String endpoint, String body, String contentType) {
         HttpRequest req = new HttpRequest();
@@ -21,7 +22,7 @@ public with sharing class RESTService {
     public static void refreshAccessToken() {
         Http http = new Http();
         Salesforce_Server__c server = [SELECT Client_Id__c, Client_Secret__c FROM Salesforce_Server__c WHERE Name = 'Salesforce_Server_CAPP' LIMIT 1];
-        String endpoint = 'callout:' + NAMED_CREDENTIAL + TOKEN_ENDPOINT;
+        String endpoint = 'callout:' + NAMED_CREDENTIAL + TOKEN_ENDPOINT_CREDENTIAL;
         String contentType = 'application/x-www-form-urlencoded';
         String body = 
         'grant_type=password' +
