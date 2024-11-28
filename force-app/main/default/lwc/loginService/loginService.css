@@ -43,3 +43,18 @@
 .form-register {
     margin-top: 10px;
 }
+
+.text-error {
+    font-size: 13px;
+    margin: -15px 0 5px 5px;
+    color: red;
+}
+
+.text-register {
+    color: black;
+    font-weight: 700;
+}
+
+.input-error {
+    --dxp-s-form-element-color-border: red;
+}

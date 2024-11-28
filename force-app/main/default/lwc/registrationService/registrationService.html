@@ -7,8 +7,10 @@
         <div class="body-container">
             <p class="body-header">User creation</p>
             <template lwc:if={isPasswordSet}>
-                <p>Password resetted successfully!!!</p>
-                <p>You can now return to login page.</p>
+                <div class="reset-info">
+                    <p class="reset-header">Password resetted successfully!!!</p>
+                    <p>You can now return to login page.</p>
+                </div>
             </template>
             <template lwc:else>
                 <div class="body-inputs">
