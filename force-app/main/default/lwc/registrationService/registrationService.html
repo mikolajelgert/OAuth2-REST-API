@@ -1,10 +1,21 @@
 <template>
     <div class="login-container">
+        <template if:true={isVisible}>
+            <div class="slds-notify slds-notify_toast slds-theme_success">
+                <span class="slds-assistive-text">Success</span>
+                <div class="slds-notify__content">
+                    <h2 class="slds-text-heading_small">{message}</h2>
+                </div>
+            </div>
+        </template>
         <img src={images.cloud} alt="salesforce-cloudLogo" width="150" height="150" class="cloud-header"/>
         <div class="header">
             <p>OAuth REST_API</p>
         </div>
         <div class="body-container">
+            <template if:false={isUserCreated}>
+                <lightning-spinner class="spinner" alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+            </template>
             <p class="body-header">User creation</p>
             <template lwc:if={isPasswordSet}>
                 <div class="reset-info">
@@ -13,28 +24,54 @@
                 </div>
             </template>
             <template lwc:else>
-                <div class="body-inputs">
-                    <div class="form-firstname">
-                        <lightning-input type="text" name="firstname" id="username" label="FirstName"></lightning-input>
-                    </div>
-                    <div class="form-lastname">
-                        <lightning-input type="text" name="lastname" id="surname" label="LastName"></lightning-input>
-                    </div>
-                    <div class="form-email">
-                        <lightning-input type="text" name="email" id="email" label="Email"></lightning-input>
-                    </div>
-                    <div class="form-alias">
-                        <lightning-input type="text" name="alias" id="alias" label="Alias"></lightning-input>
+                <div class={bodyInputs}>
+                    <div class="form-username">
+                        <lightning-input 
+                        class={usernameInputClass} 
+                        type="text" 
+                        name="username" 
+                        id="username" 
+                        label="Username: (example@gmail.com)"
+                        pattern="[A-Za-z]+@[A-Za-z]+\.[A-Za-z]+"
+                        message-when-pattern-mismatch="Invalid username format"
+                        onchange={handleInputChange} 
+                        onfocus={resetFlag}>
+                    </lightning-input>
+                        <template lwc:if={isUserExist}>
+                            <p class="text-error">This user exists.</p>
+                        </template>
                     </div>
                     <div class="form-password">
-                        <lightning-input type="text" name="password" id="password" label="Password"></lightning-input>
+                        <lightning-input 
+                        type="password" 
+                        name="password" 
+                        id="password" 
+                        label="Password:" 
+                        onchange={handleInputChange}
+                        pattern="^(?=.*[a-z])(?=.*\d)[a-z\d]{8,}$" 
+                        message-when-pattern-mismatch="8 characters (letters and numbers)">
+                        </lightning-input>
+                    </div>
+                    <div class="form-email">
+                        <lightning-input 
+                        type="email" 
+                        name="email" 
+                        id="email" 
+                        label="Email:" 
+                        onchange={handleInputChange}
+                        pattern="[A-Za-z]+@[A-Za-z]+\.[A-Za-z]+"
+                        message-when-pattern-mismatch="Invalid email format (example@gmail.com)">
+                        </lightning-input>
+                    </div>
+                    <div class="form-alias">
+                        <lightning-input type="text" name="alias" id="alias" label="Alias:" max-length="8" onchange={handleInputChange}></lightning-input>
                     </div>
                 </div>
                 <div class="form-submit">
-                    <lightning-button class="login-button" variant="brand" type="submit" onclick={handleSubmit} label="Create Account"></lightning-button>
+                    <lightning-button class="login-button" variant="brand" type="submit" onclick={handleSubmit} label="Create User" disabled={areInputsFilled}></lightning-button>
                 </div>
             </template>
-            <div class="form-register">
+            <div class={backToLogin}>
                 <a onclick={navigateToLogin}>Back to login</a>
             </div>
         </div>
