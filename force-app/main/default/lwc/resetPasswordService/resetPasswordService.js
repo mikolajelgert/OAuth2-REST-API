@@ -11,18 +11,15 @@ export default class LoginContainer extends NavigationMixin(LightningElement) {
     username;
     password;
     isUserNotExists = false;
-    isPasswordIncorrect = false;
+    isPasswordValid = true;
+
 
     get usernameInputClass() {
         return this.isUserNotExists ? 'input-error' : '';
     }
 
-    get passwordInputClass() {
-        return this.isPasswordIncorrect ? 'input-error' : '';
-    }
-
     get areCredentialsCorrect() {
-        return this.isUserNotExists || this.isPasswordIncorrect || (!this.username || !this.password);
+        return this.isUserNotExists || !this.isPasswordValid || (!this.username || !this.password);
     }
 
     navigateToRegister() {
@@ -34,21 +31,14 @@ export default class LoginContainer extends NavigationMixin(LightningElement) {
         }, true);
     }
 
-    navigateToResetPassword() {
-        this[NavigationMixin.Navigate]({
-            type: 'comm__namedPage',
-            attributes: {
-                name: 'OAuthResetPassword__c'
-            }
-        }, true);
-    }
-
     handleUsername(event) {
         this.username = event.target.value;
     }
 
     handlePassword(event) {
-        this.password = event.target.value;
+        const target = event.target;
+        this.password = target.value;
+        this.isPasswordValid = target.checkValidity();
     }
 
     checkCredentials(event) {
@@ -57,19 +47,7 @@ export default class LoginContainer extends NavigationMixin(LightningElement) {
             if (response.length > 0 && (responseObj.totalSize == 0 || responseObj.records.length == 0)) {
                 this.isUserNotExists = true;
             } else {
-                checkPassword({username: this.username, password: this.password}).then(response => {
-                    const responseObj = JSON.parse(response);
-                    if (responseObj.hasOwnProperty("error")) {
-                        //password error text
-                        console.log('Login error');
-                        this.isPasswordIncorrect = true;
-                    } else {
-                        //przepusc dalej
-                        console.log('Login successful')
-                    }
-                }).catch(error => {
-                    console.log(error);
-                })
+                //set password
             }
         })
         .catch(error => {
@@ -79,6 +57,5 @@ export default class LoginContainer extends NavigationMixin(LightningElement) {
 
     resetFlag() {
         this.isUserNotExists = false;
-        this.isPasswordIncorrect = false;
     }
 }

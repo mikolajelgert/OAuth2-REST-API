@@ -1,7 +1,6 @@
 public without sharing class UserController {
     private static final String CHATTER_USER_NAME = 'Chatter External User';
-    private static final String USER_FIRSTNAME = 'firstname';
-    private static final String USER_LASTNAME = 'lastname';
+    private static final String USER_USERNAME = 'username';
     private static final String USER_EMAIL = 'email';
     private static final String USER_ALIAS = 'alias';
     private static final String USER_PASSWORD = 'password';
@@ -12,27 +11,21 @@ public without sharing class UserController {
 
     @AuraEnabled(cacheable=false)
     public static Boolean createUserData(Map<String, Object> userData) {
-        String firstName = (String) userData.get(USER_FIRSTNAME);
-        String lastName = (String) userData.get(USER_LASTNAME);
+        String userName = (String) userData.get(USER_USERNAME);
         String email = (String) userData.get(USER_EMAIL);
         String alias = (String) userData.get(USER_ALIAS);
 
-        //for testing purposes
-        // List<User> users = [SELECT Id FROM User WHERE Email = :email OR LastName = :lastName];
-        // if (users.size() > 0) {
-        //     return false;
-        // }
-        createUserREST(new List<String>{firstName, lastName, email, alias});
+        createUserREST(new List<String>{userName, email, alias});
         return true;
     }
 
     @future(callout=true)
     public static void createUserREST(List<String> data) {
         Map<String, Object> userMap = new Map<String, Object>{
-            'Username' => data[0] + '.' + data[1] + '@restapi.com',
-            'LastName' => data[1],
-            'Email' => data[2],
-            'Alias' => data[3],
+            'Username' => data[0],
+            'LastName' => data[0],
+            'Email' => data[1],
+            'Alias' => data[2],
             'LanguageLocaleKey' => 'en_US',
             'TimeZoneSidKey' => 'GMT',
             'EmailEncodingKey' => 'UTF-8',
@@ -50,6 +43,7 @@ public without sharing class UserController {
 
         RESTService.refreshAccessToken();
         HttpResponse response = RESTService.sendRequest(request);
+        System.debug(response.getBody());
     }
 
     @AuraEnabled
