@@ -78,7 +78,7 @@ export default class RegistrationService extends NavigationMixin(LightningElemen
                     createUserData({userData: formatData}).then((isCreated) => {
                         if (isCreated) {
                             setTimeout(() => {
-                                setUserPassword({email: formatData?.email, password: formatData?.password}).then((result) => {
+                                setUserPassword({username: formatData?.username, password: formatData?.password}).then((result) => {
                                     if (result) {
                                         this.showToast('Username: ' + formatData?.username);
                                         this.isPasswordSet = true;

@@ -43,12 +43,21 @@ export default class LoginContainer extends NavigationMixin(LightningElement) {
         }, true);
     }
 
+    navigateToHome() {
+        this[NavigationMixin.Navigate]({
+            type: 'comm__namedPage',
+            attributes: {
+                name: 'Home'
+            }
+        }, true);
+    }
+
     handleUsername(event) {
-        this.username = event.target.value;
+        this.username = (event.target.value).trim();
     }
 
     handlePassword(event) {
-        this.password = event.target.value;
+        this.password = (event.target.value).trim();
     }
 
     checkCredentials(event) {
@@ -60,12 +69,9 @@ export default class LoginContainer extends NavigationMixin(LightningElement) {
                 checkPassword({username: this.username, password: this.password}).then(response => {
                     const responseObj = JSON.parse(response);
                     if (responseObj.hasOwnProperty("error")) {
-                        //password error text
-                        console.log('Login error');
                         this.isPasswordIncorrect = true;
                     } else {
-                        //przepusc dalej
-                        console.log('Login successful')
+                        this.navigateToHome()
                     }
                 }).catch(error => {
                     console.log(error);
