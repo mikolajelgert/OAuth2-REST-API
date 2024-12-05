@@ -48,7 +48,7 @@
                         id="password" 
                         label="Password:" 
                         onchange={handleInputChange}
-                        pattern="^(?=.*[a-z])(?=.*\d)[a-z\d]{8,}$" 
+                        pattern="^^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" 
                         message-when-pattern-mismatch="8 characters (letters and numbers)">
                         </lightning-input>
                     </div>

@@ -12,7 +12,7 @@
                 </template>
             </div>
             <div class="form-password">
-                <lightning-input class={passwordInputClass} type="text" name="password" id="password" label="Password" onchange={handlePassword} onfocus={resetFlag}></lightning-input>
+                <lightning-input class={passwordInputClass} type="password" name="password" id="password" label="Password" onchange={handlePassword} onfocus={resetFlag}></lightning-input>
                 <template lwc:if={isPasswordIncorrect}>
                     <p class="text-error">Password incorrect</p>
                 </template>

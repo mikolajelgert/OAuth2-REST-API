@@ -1,8 +1,8 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { NavigationMixin } from "lightning/navigation";
 import sfCloud from '@salesforce/resourceUrl/sfCloud';
 import checkUsername from '@salesforce/apex/UserController.checkUsername';
-import checkPassword from '@salesforce/apex/UserController.checkPassword';
+import setUserPassword from '@salesforce/apex/UserController.setUserPassword';
 
 export default class LoginContainer extends NavigationMixin(LightningElement) {
     images = {
@@ -12,7 +12,16 @@ export default class LoginContainer extends NavigationMixin(LightningElement) {
     password;
     isUserNotExists = false;
     isPasswordValid = true;
+    isVisible = false;
+    @api message = '';
 
+    @api showToast(message) {
+        this.message = message;
+        this.isVisible = true;
+        setTimeout(() => {
+            this.isVisible = false;
+        }, 5000);
+    }
 
     get usernameInputClass() {
         return this.isUserNotExists ? 'input-error' : '';
@@ -22,13 +31,13 @@ export default class LoginContainer extends NavigationMixin(LightningElement) {
         return this.isUserNotExists || !this.isPasswordValid || (!this.username || !this.password);
     }
 
-    navigateToRegister() {
+    navigateToLogin() {
         this[NavigationMixin.Navigate]({
             type: 'comm__namedPage',
             attributes: {
-                name: 'OAuthRegister__c'
+                name: 'OAuthLogin__c'
             }
-        }, true);
+        }, true)
     }
 
     handleUsername(event) {
@@ -47,7 +56,16 @@ export default class LoginContainer extends NavigationMixin(LightningElement) {
             if (response.length > 0 && (responseObj.totalSize == 0 || responseObj.records.length == 0)) {
                 this.isUserNotExists = true;
             } else {
-                //set password
+                setUserPassword({username: this.username, password: this.password}).then((result) => {
+                    if (result) {
+                        this.showToast('Password reseted successfully!');
+                        setTimeout(() => {
+                            this.navigateToLogin();
+                        }, 2000);
+                    }
+                }).catch(error => {
+                    console.log(error);
+                })
             }
         })
         .catch(error => {

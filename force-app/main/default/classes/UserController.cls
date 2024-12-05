@@ -47,8 +47,8 @@ public without sharing class UserController {
     }
 
     @AuraEnabled
-    public static Boolean setUserPassword(String email, String password) {
-        User user = [SELECT Id FROM User WHERE Email = :email LIMIT 1];
+    public static Boolean setUserPassword(String username, String password) {
+        User user = [SELECT Id FROM User WHERE Username = :username LIMIT 1];
         if (user != null) {
             try {
                 System.setPassword(user.Id, password);
@@ -98,5 +98,10 @@ public without sharing class UserController {
         HttpRequest req = RESTService.createRequest('POST', endpoint, body, contentType);
         HttpResponse resp = RESTService.sendRequest(req);
         return resp.getBody();
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<User> getLastUsers() {
+        return [SELECT CreatedDate, Id, Username, Email, Profile.Name FROM User ORDER BY CreatedDate DESC];
     }
 }
