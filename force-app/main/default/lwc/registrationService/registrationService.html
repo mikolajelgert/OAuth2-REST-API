@@ -32,7 +32,7 @@
                         name="username" 
                         id="username" 
                         label="Username: (example@gmail.com)"
-                        pattern="[A-Za-z]+@[A-Za-z]+\.[A-Za-z]+"
+                        pattern="[A-Za-z\d.]+@[A-Za-z]+\.[A-Za-z]+"
                         message-when-pattern-mismatch="Invalid username format"
                         onchange={handleInputChange} 
                         onfocus={resetFlag}>
@@ -48,7 +48,7 @@
                         id="password" 
                         label="Password:" 
                         onchange={handleInputChange}
-                        pattern="^^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" 
+                        pattern="[A-Za-z\d@$!%*?&amp;]{8,}" 
                         message-when-pattern-mismatch="8 characters (letters and numbers)">
                         </lightning-input>
                     </div>
@@ -59,7 +59,7 @@
                         id="email" 
                         label="Email:" 
                         onchange={handleInputChange}
-                        pattern="[A-Za-z]+@[A-Za-z]+\.[A-Za-z]+"
+                        pattern="[A-Za-z\d.]+@[A-Za-z]+\.[A-Za-z]+"
                         message-when-pattern-mismatch="Invalid email format (example@gmail.com)">
                         </lightning-input>
                     </div>
