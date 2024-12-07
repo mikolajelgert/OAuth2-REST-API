@@ -1,4 +1,4 @@
-import { LightningElement, wire } from 'lwc';
+import { LightningElement, wire, track } from 'lwc';
 import sfBear from '@salesforce/resourceUrl/sfBear';
 import sfCloud from '@salesforce/resourceUrl/sfCloud';
 import { NavigationMixin } from "lightning/navigation";
@@ -26,9 +26,18 @@ export default class HomeService extends NavigationMixin(LightningElement) {
         return this.timer;
     }
 
-    connectedCallback() {;
-        setTimeout(() => this.startLogoutTimer(), 500);
-        this.collectUsers();
+    connectedCallback() {
+        window.addEventListener('beforeunload', this.handleUserAccess);
+        const userAccess = sessionStorage.getItem('userAccess');
+        this.hasGuestAccess = userAccess ?? false;
+        if (this.hasGuestAccess) {
+            setTimeout(() => this.startLogoutTimer(), 500);
+            this.collectUsers();
+        }
+    }
+
+    handleUserAccess() {
+        sessionStorage.clear();
     }
 
     startLogoutTimer() {

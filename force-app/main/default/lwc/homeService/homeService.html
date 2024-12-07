@@ -1,26 +1,31 @@
 <template>
     <template if:false={hasGuestAccess}>
-        <p>Invalid access</p>
+        <div class="invalid-access">
+            <p>Invsufficient priviliges</p>
+            <img src={images.cloud} alt="salesforce-cloudLogo" width="100" height="150" class="cloud-header"/>
+        </div>
     </template>
-    <div class="timeout-container">
-        <img src={images.cloud} alt="salesforce-cloudLogo" width="100" height="150" class="cloud-header"/>
-        <div class="timeout-text">
-            <p class="logout-text">Session logout: </p><b>{logoutTimer}</b>
+    <template if:true={hasGuestAccess}>
+        <div class="timeout-container">
+            <img src={images.cloud} alt="salesforce-cloudLogo" width="100" height="150" class="cloud-header"/>
+            <div class="timeout-text">
+                <p class="logout-text">Session logout: </p><b>{logoutTimer}</b>
+            </div>
         </div>
-    </div>
-    <div class="home-container">
-        <div class="home-header">
-            <p>Welcome to the service!</p>
+        <div class="home-container">
+            <div class="home-header">
+                <p>Welcome to the service!</p>
+            </div>
+            <img src={images.bear} alt="salesforce-cloudLogo" width="325" height="150" class="image-header"/>
+            <p class="users-header">Active users:</p>
+            <div class="user-datatable">
+                <lightning-datatable
+                        key-field="id"
+                        data={data}
+                        columns={columns}
+                        hide-checkbox-column>
+                </lightning-datatable>
+            </div>
         </div>
-        <img src={images.bear} alt="salesforce-cloudLogo" width="325" height="150" class="image-header"/>
-        <p class="users-header">Active users:</p>
-        <div class="user-datatable">
-            <lightning-datatable
-                    key-field="id"
-                    data={data}
-                    columns={columns}
-                    hide-checkbox-column>
-            </lightning-datatable>
-        </div>
-    </div>
+    </template>
 </template>

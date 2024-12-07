@@ -1,10 +1,16 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, wire } from 'lwc';
 import { NavigationMixin } from "lightning/navigation";
 import sfCloud from '@salesforce/resourceUrl/sfCloud';
 import checkUsername from '@salesforce/apex/UserController.checkUsername';
 import checkPassword from '@salesforce/apex/UserController.checkPassword';
+//import { publish } from 'c/pubsub';
+// import { publish, MessageContext } from 'lightning/messageService';
+// import USER_ACCESS_CHANNEL from '@salesforce/messageChannel/User_Access__c';
 
 export default class LoginContainer extends NavigationMixin(LightningElement) {
+    // @wire(MessageContext)
+    // messageContext;
+
     images = {
         cloud: sfCloud
     };
@@ -71,7 +77,12 @@ export default class LoginContainer extends NavigationMixin(LightningElement) {
                     if (responseObj.hasOwnProperty("error")) {
                         this.isPasswordIncorrect = true;
                     } else {
-                        this.navigateToHome()
+                        //const payload = {userAccess: 'jajco'};
+                        //publish('userAccessEvent', payload);
+                        sessionStorage.setItem('userAccess', true);
+                        this.navigateToHome();
+                        //publishUserAccess(payload);
+                        //publish(this.messageContext, USER_ACCESS_CHANNEL, payload);
                     }
                 }).catch(error => {
                     console.log(error);
@@ -82,6 +93,15 @@ export default class LoginContainer extends NavigationMixin(LightningElement) {
             console.log(error);
         })
     }
+
+    // async publishUserAccess(payload) {
+    //     await publish(this.messageContext, USER_ACCESS_CHANNEL, payload);
+    //     // try {
+    //     //     await this.navigateToHome();
+    //     // } catch (error) {
+    //     //     console.error(error);
+    //     // }
+    // }
 
     resetFlag() {
         this.isUserNotExists = false;
